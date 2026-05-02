@@ -108,7 +108,7 @@ export const cv: CVData = {
     eyebrow: 'Lernender Informatiker · IMS Basel',
     headlineHero: 'Lernender, der nebenbei <em>liefert</em>.',
     summary:
-      'Ich bin <strong>Fesin</strong>, 18, in Ausbildung zur ' +
+      'Ich bin <strong>Fesin</strong>, 20, in Ausbildung zur ' +
       '<code>BM &amp; EFZ Informatik</code> an der IMS Basel. ' +
       'Daneben baue ich seit 2025 als Co-Founder von ' +
       '<strong>NXT Vision Studio</strong> Webseiten und Automatisierungen ' +
