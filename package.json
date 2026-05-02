@@ -5,14 +5,16 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/build-pdf.mjs",
+    "build": "astro build && node scripts/build-assets.mjs",
     "build:html": "astro build",
-    "build:pdf": "node scripts/build-pdf.mjs",
+    "build:assets": "node scripts/build-assets.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.0.0"
+    "@astrojs/sitemap": "^3.2.0",
+    "astro": "^5.0.0",
+    "sharp": "^0.33.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

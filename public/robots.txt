@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /og-image/
+Disallow: /cv-print/
+
+Sitemap: https://fesin.dev/sitemap-index.xml

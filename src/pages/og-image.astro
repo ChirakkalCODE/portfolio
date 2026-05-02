@@ -1,0 +1,123 @@
+---
+/**
+ * Hidden Route — wird zur Build-Zeit von Puppeteer als 1200x630 PNG
+ * gerendert und als dist/og.png gespeichert. Nicht für Browser gedacht.
+ */
+import Layout from '@/layouts/Layout.astro';
+import { cv } from '@/data/cv';
+const { personal, positioning } = cv;
+---
+<Layout title="og-image" noIndex={true}>
+  <main class="og">
+    <div class="bg-mesh"></div>
+    <div class="grain"></div>
+
+    <div class="card">
+      <div class="eyebrow">{positioning.eyebrow}</div>
+      <h1>{personal.firstName} <em>{personal.lastName}</em></h1>
+      <p class="tagline">
+        Lernender, der nebenbei <em>liefert</em>.<br>
+        IMS Basel · sucht Praktikum / Lernender-Position.
+      </p>
+      <div class="footer">
+        <span class="dot"></span>
+        <span>fesin.dev · github.com/ChirakkalCODE</span>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style is:global>
+  html, body {
+    margin: 0; padding: 0;
+    width: 1200px; height: 630px;
+    overflow: hidden;
+    background: #0A0A0F;
+    font-family: 'Geist', system-ui, sans-serif;
+    color: #F5F1EA;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .og {
+    position: relative;
+    width: 1200px; height: 630px;
+    display: grid; place-items: center;
+    overflow: hidden;
+  }
+
+  .bg-mesh {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 18% 22%, rgba(91, 75, 138, 0.5), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 82% 70%, rgba(232, 168, 124, 0.28), transparent 65%),
+      #0A0A0F;
+  }
+
+  .grain {
+    position: absolute; inset: 0; z-index: 1;
+    pointer-events: none; opacity: 0.35; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.5'/></svg>");
+  }
+
+  .card {
+    position: relative; z-index: 2;
+    padding: 64px 80px;
+    max-width: 980px;
+    width: 100%;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    color: #E8A87C;
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 116px;
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin: 0 0 28px 0;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+  }
+  h1 em {
+    font-style: italic; font-weight: 400;
+    color: #E8A87C;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+
+  .tagline {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 300;
+    line-height: 1.35;
+    color: rgba(245, 241, 234, 0.78);
+    max-width: 800px;
+    margin: 0;
+  }
+  .tagline em {
+    font-style: italic; color: #E8A87C; font-weight: 400;
+  }
+
+  .footer {
+    margin-top: 56px;
+    display: flex; align-items: center; gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: rgba(245, 241, 234, 0.55);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dot {
+    width: 10px; height: 10px;
+    background: #9EC5AB; border-radius: 50%;
+  }
+
+  /* Komplett unsichtbar machen */
+  .topbar, nav.pillnav, .site-footer { display: none !important; }
+</style>

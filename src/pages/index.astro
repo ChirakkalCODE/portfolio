@@ -1,11 +1,12 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import meImg from '@/assets/me.png';
 import { cv, formatBuildDate } from '@/data/cv';
 import '@/styles/global.css';
 
 const buildDate = formatBuildDate();
 const { personal, positioning, education, projects, skills, languages, meta } = cv;
-const meBaseImg = `${import.meta.env.BASE_URL}me.png`.replace(/\/+/g, '/');
 const cvPdfUrl = `${import.meta.env.BASE_URL}cv.pdf`.replace(/\/+/g, '/');
 
 const TODO_PREFIX = '[TODO';
@@ -60,7 +61,15 @@ function isTodo(s: string): boolean {
       <div class="center">
         <div class="portrait-frame reveal reveal-2">
           <div class="portrait">
-            <img src={meBaseImg} alt={`${personal.firstName} ${personal.lastName}`} />
+            <Image
+              src={meImg}
+              alt={`${personal.firstName} ${personal.lastName}`}
+              widths={[220, 440, 660]}
+              sizes="(max-width: 640px) 170px, 220px"
+              format="webp"
+              quality={85}
+              loading="eager"
+            />
           </div>
         </div>
 
@@ -233,8 +242,12 @@ function isTodo(s: string): boolean {
     </div>
     <div class="right">
       <a href={`https://${personal.contact.github}`} target="_blank" rel="noopener">GitHub</a>
-      <span class="dot">✦</span>
-      <a href="https://fesinchirakkal.framer.website/" target="_blank" rel="noopener">Framer Site</a>
+      {personal.contact.linkedin && (
+        <>
+          <span class="dot">✦</span>
+          <a href={`https://${personal.contact.linkedin}`} target="_blank" rel="noopener">LinkedIn</a>
+        </>
+      )}
       <span class="dot">✦</span>
       <a href={`mailto:${personal.contact.email}`}>E-Mail</a>
     </div>
