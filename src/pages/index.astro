@@ -1,0 +1,320 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { cv, formatBuildDate } from '@/data/cv';
+import '@/styles/global.css';
+
+const buildDate = formatBuildDate();
+const { personal, positioning, education, projects, skills, languages, meta } = cv;
+const meBaseImg = `${import.meta.env.BASE_URL}me.png`.replace(/\/+/g, '/');
+const cvPdfUrl = `${import.meta.env.BASE_URL}cv.pdf`.replace(/\/+/g, '/');
+
+const TODO_PREFIX = '[TODO';
+function isTodo(s: string): boolean {
+  return s.trim().startsWith(TODO_PREFIX);
+}
+---
+<Layout
+  title={`${personal.firstName} ${personal.lastName} — Lernender Informatiker, Basel`}
+  description="Lernender Informatiker an der IMS Basel. Sucht Praktikum / Lernender-Position in Software-Entwicklung."
+>
+  <div class="bg-mesh"></div>
+  <canvas id="particles"></canvas>
+  <div class="grain"></div>
+
+  <header class="topbar reveal reveal-1">
+    <a href={import.meta.env.BASE_URL} class="wordmark">
+      {personal.firstName} {personal.lastName}<em>&nbsp;/ Lernender</em>
+    </a>
+    <nav class="pillnav">
+      <a href="#start" class="active">Start</a>
+      <a href="#projekte">Projekte</a>
+      <a href="#stack">Stack</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <main class="hero-section" id="start">
+    <div class="hero">
+      <aside class="side left">
+        <div class="card code-card reveal reveal-3">
+          <div class="card-label">aktueller code</div>
+          <!-- TODO: Snippet aus eigenem Projekt einsetzen -->
+          <div style="margin-top:6px">
+            <span class="comment">// [TODO: echtes Snippet aus eigenem Projekt]</span><br>
+            <span class="keyword">function</span> <span class="fn">example</span><span class="punct">(</span>input<span class="punct">) {</span><br>
+            &nbsp;&nbsp;<span class="keyword">return</span> input<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;.<span class="fn">filter</span><span class="punct">(</span>x <span class="punct">=&gt;</span> x.valid<span class="punct">)</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;.<span class="fn">map</span><span class="punct">(</span>x <span class="punct">=&gt;</span> x.id<span class="punct">);</span><br>
+            <span class="punct">}</span>
+          </div>
+        </div>
+
+        <div class="card reveal reveal-4">
+          <div class="card-label"><span class="pulse-dot"></span>status</div>
+          <div class="card-title">Verfügbar für<br><em>Praktikum / Lehrstelle</em></div>
+          <div class="card-meta">Start ab {meta.seekingFrom} · {meta.location}</div>
+        </div>
+      </aside>
+
+      <div class="center">
+        <div class="portrait-frame reveal reveal-2">
+          <div class="portrait">
+            <img src={meBaseImg} alt={`${personal.firstName} ${personal.lastName}`} />
+          </div>
+        </div>
+
+        <div class="name-block">
+          <div class="eyebrow reveal reveal-3">{positioning.eyebrow}</div>
+          <h1 class="hero-title reveal reveal-4" set:html={positioning.headlineHero}></h1>
+          <p class="tagline reveal reveal-5" set:html={positioning.summary}></p>
+
+          <div class="cta-row reveal reveal-6">
+            <a href="#projekte" class="btn btn-primary">
+              Meine Projekte
+              <span class="arrow">→</span>
+            </a>
+            <a href={cvPdfUrl} class="btn btn-ghost" target="_blank" rel="noopener" download>
+              Lebenslauf (PDF)
+            </a>
+            <span class="cta-stamp" title="Datum des letzten Builds">
+              Stand · {buildDate}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side right">
+        <div class="card reveal reveal-3">
+          <div class="card-label">sprachen</div>
+          <div class="lang-grid">
+            {languages.map((l) => (
+              <div class="lang-item">
+                <span class="lang-name">{l.name}</span>
+                <span class="lang-level">{l.level}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="card reveal reveal-4">
+          <div class="card-label">basis</div>
+          <div class="card-title">{personal.address.city}</div>
+          <div class="card-meta">
+            {personal.permits.join(' · ')}
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ============ AUSBILDUNG-BANNER ============ -->
+  <section class="ausbildung-banner">
+    <div class="ausbildung-card">
+      <div class="ausbildung-icon">B</div>
+      <div class="ausbildung-text">
+        <h2>In Ausbildung: <em>BM &amp; EFZ Informatik</em></h2>
+        <p>{education[0].institution} · Abschluss {education[0].period.split('→').pop()?.trim()}</p>
+      </div>
+      <div class="ausbildung-search">
+        <strong>Suche:</strong>
+        {meta.seekingRole}<br>
+        {meta.location} · ab {meta.seekingFrom}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROJEKTE ============ -->
+  <section class="projects-section" id="projekte">
+    <div class="container">
+      <div class="section-eyebrow">Projekte</div>
+      <h2 class="section-title">Was ich <em>tatsächlich</em> gebaut habe</h2>
+      <p class="section-lede">
+        Vier ausgewählte Projekte aus den letzten Monaten — als Co-Founder von
+        NXT Vision Studio und freelance. Pro Projekt: Was war zu lösen, was habe
+        ich konkret gemacht, was habe ich daraus mitgenommen.
+      </p>
+
+      <div class="projects-grid">
+        {projects.map((p, i) => (
+          <article class="project-card">
+            <span class="project-num">{String(i + 1).padStart(2, '0')}</span>
+            <header class="project-head">
+              <h3 class="project-name">{p.name}</h3>
+              <span class="project-meta">{p.role} · {p.period}</span>
+              <div class="project-tech">
+                {p.tech.map((t) => <span>{t}</span>)}
+              </div>
+            </header>
+            <dl class="project-body">
+              <div class="project-field">
+                <dt>Problem</dt>
+                <dd class={isTodo(p.problem) ? 'todo-text' : ''}>{p.problem}</dd>
+              </div>
+              <div class="project-field">
+                <dt>Mein Beitrag</dt>
+                <dd class={isTodo(p.contribution) ? 'todo-text' : ''}>{p.contribution}</dd>
+              </div>
+              <div class="project-field">
+                <dt>Gelernt</dt>
+                <dd class={isTodo(p.learning) ? 'todo-text' : ''}>{p.learning}</dd>
+              </div>
+            </dl>
+            {(p.links?.live || p.links?.github) && (
+              <footer class="project-links">
+                {p.links?.live && <a href={p.links.live} class="project-link" target="_blank" rel="noopener">Live →</a>}
+                {p.links?.github && <a href={p.links.github} class="project-link" target="_blank" rel="noopener">GitHub →</a>}
+              </footer>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STACK ============ -->
+  <section class="stack-section" id="stack">
+    <div class="container">
+      <div class="section-eyebrow">Stack</div>
+      <h2 class="section-title">Was ich nutze — und <em>wo</em></h2>
+      <p class="section-lede">
+        Sprachen und Tools, mit denen ich tatsächlich gearbeitet habe — mit
+        konkretem Bezug zum Projekt, in dem ich sie eingesetzt habe.
+      </p>
+
+      <div class="stack-grid">
+        {skills.map((s) => (
+          <div class="stack-entry">
+            <div class="stack-tech">{s.items.join(' · ')}</div>
+            <div class="stack-where">
+              {s.where && s.where.includes('[TODO')
+                ? <Fragment><span class="placeholder">{s.where}</span></Fragment>
+                : s.where}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSING CTA ============ -->
+  <section class="closing-cta" id="kontakt">
+    <div class="closing-cta-inner">
+      <div class="section-eyebrow" style="justify-content: center;">Kontakt</div>
+      <h2>
+        Suchst du einen Lernenden oder Praktikanten,<br>
+        der schon <em>eigenständig arbeitet</em>?
+      </h2>
+      <p class="tagline" style="margin: 0 auto;">
+        Schreib mir kurz — ich melde mich am selben Tag zurück.
+      </p>
+      <div class="cta-row">
+        <a href={`mailto:${personal.contact.email}`} class="btn btn-primary">
+          E-Mail schreiben
+          <span class="arrow">→</span>
+        </a>
+        <a href={cvPdfUrl} class="btn btn-ghost" target="_blank" rel="noopener" download>
+          Lebenslauf (PDF)
+        </a>
+        {personal.contact.linkedin && (
+          <a href={`https://${personal.contact.linkedin}`} class="btn btn-ghost" target="_blank" rel="noopener">
+            LinkedIn
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="left">
+      <span>© {new Date().getFullYear()} {personal.firstName} {personal.lastName}</span>
+      <span class="dot">✦</span>
+      <span>{personal.address.city} · Basel</span>
+    </div>
+    <div class="right">
+      <a href={`https://${personal.contact.github}`} target="_blank" rel="noopener">GitHub</a>
+      <span class="dot">✦</span>
+      <a href="https://fesinchirakkal.framer.website/" target="_blank" rel="noopener">Framer Site</a>
+      <span class="dot">✦</span>
+      <a href={`mailto:${personal.contact.email}`}>E-Mail</a>
+    </div>
+  </footer>
+
+  <script>
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canvas = document.getElementById('particles') as HTMLCanvasElement | null;
+    if (canvas && !reduceMotion) {
+      const ctx = canvas.getContext('2d')!;
+      let particles: Array<{ x: number; y: number; vx: number; vy: number; r: number; baseAlpha: number }> = [];
+      const mouse = { x: -1000, y: -1000 };
+
+      function resize() {
+        canvas!.width = window.innerWidth * window.devicePixelRatio;
+        canvas!.height = window.innerHeight * window.devicePixelRatio;
+        canvas!.style.width = window.innerWidth + 'px';
+        canvas!.style.height = window.innerHeight + 'px';
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      }
+      function init() {
+        particles = [];
+        const count = Math.min(70, Math.floor(window.innerWidth / 22));
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            vx: (Math.random() - 0.5) * 0.12,
+            vy: (Math.random() - 0.5) * 0.12,
+            r: Math.random() * 1.3 + 0.3,
+            baseAlpha: Math.random() * 0.3 + 0.08,
+          });
+        }
+      }
+      function tick() {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        particles.forEach(p => {
+          const dx = p.x - mouse.x, dy = p.y - mouse.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 130) {
+            const force = (130 - dist) / 130 * 0.5;
+            p.vx += (dx / dist) * force; p.vy += (dy / dist) * force;
+          }
+          p.vx *= 0.965; p.vy *= 0.965;
+          p.vx += (Math.random() - 0.5) * 0.018;
+          p.vy += (Math.random() - 0.5) * 0.018;
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0) p.x = window.innerWidth;
+          if (p.x > window.innerWidth) p.x = 0;
+          if (p.y < 0) p.y = window.innerHeight;
+          if (p.y > window.innerHeight) p.y = 0;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(245, 241, 234, ${p.baseAlpha})`;
+          ctx.fill();
+        });
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 110) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(232, 168, 124, ${(1 - dist / 110) * 0.07})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+      window.addEventListener('resize', () => { resize(); init(); });
+      window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+      window.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
+      resize(); init(); tick();
+    } else if (canvas) {
+      canvas.style.display = 'none';
+    }
+  </script>
+</Layout>

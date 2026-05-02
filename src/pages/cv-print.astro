@@ -1,0 +1,142 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { cv, formatBuildDate } from '@/data/cv';
+import '@/styles/print.css';
+
+const buildDate = formatBuildDate();
+const { personal, positioning, education, experience, projects, skills, languages, interests, meta, references } = cv;
+
+function isTodo(s: string) {
+  return s.trim().startsWith('[TODO');
+}
+
+const fullName = `${personal.firstName} ${personal.lastName}`;
+---
+<Layout title={`Lebenslauf — ${fullName}`} description="Lebenslauf — Druckversion">
+  <div class="cv-page">
+
+    <!-- HEADER -->
+    <header class="cv-header">
+      <div>
+        <h1 class="cv-name">{fullName}</h1>
+        <div class="cv-role">{positioning.role}</div>
+      </div>
+      <div class="cv-seeking">
+        <strong>Suche {meta.seekingRole}</strong>
+        ab {meta.seekingFrom} · {meta.location}
+      </div>
+    </header>
+
+    <!-- KONTAKT -->
+    <div class="cv-contact">
+      <span>{personal.address.street}, {personal.address.postcode} {personal.address.city}</span>
+      <span>{personal.contact.phone}</span>
+      <span>{personal.contact.email}</span>
+      <span>{personal.contact.website}</span>
+      <span>{personal.contact.github}</span>
+      {personal.contact.linkedin && <span>{personal.contact.linkedin}</span>}
+    </div>
+
+    <!-- ERFAHRUNG -->
+    <section class="cv-section">
+      <h2>Erfahrung</h2>
+      {experience.map((e) => (
+        <div class="cv-entry">
+          <div class="cv-entry-title">{e.role} — {e.organization}</div>
+          <div class="cv-entry-period">{e.period}</div>
+          <div class="cv-entry-sub">{e.location}</div>
+          <div class="cv-entry-body">
+            <ul class="cv-bullets">
+              {e.bullets.map((b) => <li>{b}</li>)}
+            </ul>
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <!-- AUSGEWÄHLTE PROJEKTE -->
+    <section class="cv-section">
+      <h2>Ausgewählte Projekte</h2>
+      {projects.map((p) => (
+        <div class="cv-project">
+          <div class="cv-project-head">
+            <span class="cv-project-name">{p.name}</span>
+            <span class="cv-project-meta">{p.period}</span>
+          </div>
+          <div class="cv-project-tech">{p.tech.join(' · ')} · {p.role}</div>
+          <div class={`cv-project-desc ${isTodo(p.problem) ? 'todo' : ''}`}>
+            <strong>Problem.</strong> {p.problem} <strong>Beitrag.</strong> {p.contribution} <strong>Gelernt.</strong> {p.learning}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <!-- AUSBILDUNG -->
+    <section class="cv-section">
+      <h2>Ausbildung</h2>
+      {education.map((ed) => (
+        <div class="cv-entry">
+          <div class="cv-entry-title">{ed.degree}</div>
+          <div class="cv-entry-period">{ed.period}</div>
+          <div class="cv-entry-sub">{ed.institution} · {ed.location}{ed.note ? ` · ${ed.note}` : ''}</div>
+        </div>
+      ))}
+    </section>
+
+    <!-- SKILLS -->
+    <section class="cv-section cv-skills">
+      <h2>Technische Kompetenzen</h2>
+      {skills.map((s) => (
+        <div class="cv-skill-row">
+          <div class="cv-skill-group">{s.group}</div>
+          <div class="cv-skill-items">{s.items.join(' · ')}</div>
+        </div>
+      ))}
+    </section>
+
+    <!-- SPRACHEN -->
+    <section class="cv-section">
+      <h2>Sprachen</h2>
+      <div class="cv-languages">
+        {languages.map((l) => (
+          <span><strong>{l.name}</strong><em>{l.level}</em></span>
+        ))}
+      </div>
+    </section>
+
+    <!-- INTERESSEN -->
+    <section class="cv-section">
+      <h2>Interessen</h2>
+      <div class="cv-interests">
+        {interests.map((i) => <span>{i}</span>)}
+      </div>
+    </section>
+
+    <!-- REFERENZ -->
+    {references && references.length > 0 && (
+      <section class="cv-section">
+        <h2>Referenz</h2>
+        {references.map((r) => (
+          <div class="cv-ref">
+            <strong>{r.name}</strong> — {r.role}{r.location ? `, ${r.location}` : ''}
+            {r.email && <> · {r.email}</>}
+            {r.phone && <> · {r.phone}</>}
+          </div>
+        ))}
+      </section>
+    )}
+
+    <!-- FOOTER -->
+    <footer class="cv-footer">
+      <span>{personal.contact.website} · {personal.contact.github}</span>
+      <span class="stand">Stand · {buildDate}</span>
+    </footer>
+
+  </div>
+</Layout>
+
+<style is:global>
+  /* Hintergründe / Animationen aus Layout in Print-Page entfernen */
+  body { background: #ffffff !important; }
+  .bg-mesh, .grain, #particles, .topbar, .site-footer { display: none !important; }
+</style>

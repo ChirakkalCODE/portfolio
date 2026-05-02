@@ -1,0 +1,311 @@
+/* =========================================================================
+   PDF / Print Stylesheet — Lebenslauf
+   -------------------------------------------------------------------------
+   ATS-kompatibel: einspaltig, semantisches HTML, keine Hintergründe.
+   A4, schwarz auf weiß, EINE Akzentfarbe (#B5673A — print-safe Variant
+   des Brand-Warm).
+   ========================================================================= */
+
+@page {
+  size: A4;
+  margin: 16mm 16mm 14mm 16mm;
+}
+
+:root {
+  --pdf-text: #111111;
+  --pdf-muted: #555555;
+  --pdf-faint: #888888;
+  --pdf-rule: #d0d0d0;
+  --pdf-accent: #B5673A;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  background: #ffffff;
+  color: var(--pdf-text);
+  font-family: 'Geist', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 9.5pt;
+  line-height: 1.42;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.cv-page {
+  max-width: 178mm;
+  margin: 0 auto;
+}
+
+/* ============ Header ============ */
+.cv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 10pt;
+  border-bottom: 1.5pt solid var(--pdf-text);
+  margin-bottom: 14pt;
+}
+
+.cv-name {
+  font-family: 'Fraunces', 'Times New Roman', serif;
+  font-size: 26pt;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 144;
+}
+
+.cv-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--pdf-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  margin-top: 6pt;
+}
+
+.cv-seeking {
+  text-align: right;
+  font-size: 9pt;
+  color: var(--pdf-muted);
+  line-height: 1.4;
+  max-width: 70mm;
+}
+
+.cv-seeking strong {
+  display: block;
+  color: var(--pdf-text);
+  font-weight: 600;
+  font-size: 9.5pt;
+  margin-bottom: 2pt;
+}
+
+/* ============ Contact strip ============ */
+.cv-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4pt 14pt;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5pt;
+  color: var(--pdf-muted);
+  margin-bottom: 18pt;
+  padding-bottom: 10pt;
+  border-bottom: 0.5pt solid var(--pdf-rule);
+}
+
+.cv-contact span::before {
+  content: '·';
+  color: var(--pdf-faint);
+  margin-right: 12pt;
+}
+.cv-contact span:first-child::before { content: none; margin: 0; }
+
+/* ============ Section ============ */
+.cv-section {
+  margin-bottom: 14pt;
+  break-inside: avoid;
+}
+
+.cv-section h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--pdf-accent);
+  margin-bottom: 8pt;
+  padding-bottom: 4pt;
+  border-bottom: 0.5pt solid var(--pdf-rule);
+}
+
+/* ============ Entry (Education / Experience) ============ */
+.cv-entry {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4pt 14pt;
+  margin-bottom: 9pt;
+  break-inside: avoid;
+}
+
+.cv-entry-title {
+  font-family: 'Fraunces', serif;
+  font-size: 11pt;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.cv-entry-period {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--pdf-muted);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+  text-align: right;
+  align-self: start;
+  padding-top: 2pt;
+}
+
+.cv-entry-sub {
+  grid-column: 1 / 2;
+  font-size: 9pt;
+  color: var(--pdf-muted);
+  font-style: italic;
+  margin-bottom: 2pt;
+}
+
+.cv-entry-body {
+  grid-column: 1 / -1;
+  font-size: 9.5pt;
+  color: var(--pdf-text);
+}
+
+.cv-bullets {
+  list-style: none;
+  padding: 0;
+  margin-top: 3pt;
+}
+
+.cv-bullets li {
+  position: relative;
+  padding-left: 10pt;
+  margin-bottom: 2pt;
+  font-size: 9pt;
+  line-height: 1.4;
+}
+
+.cv-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 2pt; top: 5.5pt;
+  width: 3pt; height: 3pt;
+  background: var(--pdf-accent);
+  border-radius: 50%;
+}
+
+/* ============ Project entry (mehr Detail) ============ */
+.cv-project {
+  margin-bottom: 10pt;
+  break-inside: avoid;
+}
+
+.cv-project-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12pt;
+  margin-bottom: 2pt;
+}
+
+.cv-project-name {
+  font-family: 'Fraunces', serif;
+  font-size: 10.5pt;
+  font-weight: 500;
+}
+
+.cv-project-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7.5pt;
+  color: var(--pdf-muted);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.cv-project-tech {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--pdf-faint);
+  margin-bottom: 3pt;
+}
+
+.cv-project-desc {
+  font-size: 9pt;
+  line-height: 1.45;
+}
+
+.cv-project-desc strong {
+  color: var(--pdf-text);
+  font-weight: 600;
+}
+
+.cv-project-desc.todo {
+  color: var(--pdf-faint);
+  font-style: italic;
+}
+
+/* ============ Skills row ============ */
+.cv-skills .cv-skill-row {
+  display: grid;
+  grid-template-columns: 110pt 1fr;
+  gap: 12pt;
+  margin-bottom: 5pt;
+  font-size: 9pt;
+  break-inside: avoid;
+}
+
+.cv-skill-group {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: var(--pdf-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding-top: 1pt;
+}
+
+.cv-skill-items { color: var(--pdf-text); }
+
+/* ============ Languages inline ============ */
+.cv-languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4pt 18pt;
+  font-size: 9pt;
+}
+
+.cv-languages span strong {
+  font-weight: 600;
+  margin-right: 4pt;
+}
+
+.cv-languages span em {
+  font-style: normal;
+  color: var(--pdf-muted);
+  font-size: 8.5pt;
+}
+
+/* ============ Interests ============ */
+.cv-interests {
+  font-size: 9pt;
+  color: var(--pdf-muted);
+}
+
+.cv-interests span:not(:last-child)::after {
+  content: ' · ';
+  color: var(--pdf-faint);
+  margin: 0 4pt;
+}
+
+/* ============ Footer ============ */
+.cv-footer {
+  margin-top: 18pt;
+  padding-top: 8pt;
+  border-top: 0.5pt solid var(--pdf-rule);
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7.5pt;
+  color: var(--pdf-faint);
+  letter-spacing: 0.06em;
+}
+
+.cv-footer .stand {
+  color: var(--pdf-faint);
+}
+
+/* ============ Reference ============ */
+.cv-ref {
+  font-size: 9pt;
+  color: var(--pdf-muted);
+}
+.cv-ref strong { color: var(--pdf-text); font-weight: 600; }
