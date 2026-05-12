@@ -31,7 +31,9 @@ jobs:
       - name: Install Puppeteer Chromium
         run: npx puppeteer browsers install chrome
 
-      - name: Build site + PDF
+      - name: Build site + PDF (apex domain)
+        env:
+          SITE: apex
         run: npm run build
 
       - name: Upload Pages artifact
